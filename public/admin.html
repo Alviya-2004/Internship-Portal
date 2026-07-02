@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin | Unified Internship Navigator</title>
+  <!-- Tailwind CDN -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Top Nav -->
+  <header class="bg-red-700 text-white shadow">
+    <div class="max-w-6xl mx-auto flex items-center justify-between py-3 px-4">
+      <div class="flex items-center space-x-3">
+        <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center">
+          <span class="text-red-700 font-bold text-sm">UI</span>
+        </div>
+        <div class="leading-tight">
+          <div class="font-semibold text-sm tracking-wide">
+            Unified Internship Navigator
+          </div>
+          <div class="text-xs text-red-100">
+            Amal Jyothi College of Engineering – Admin
+          </div>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center space-x-4 text-xs">
+        <a href="#top" class="text-red-100 hover:text-white">Dashboard</a>
+        <a href="#internshipSection" class="text-red-100 hover:text-white">Internships</a>
+        <a href="#applicationsSection" class="text-red-100 hover:text-white">Applications</a>
+        <a href="/faculty.html" id="facultyDashLink" class="text-red-100 hover:text-white hidden font-semibold">My Faculty Dashboard</a>
+        
+        <!-- PROFILE DROPDOWN -->
+        <div class="relative flex items-center justify-center pl-2">
+          <button id="profileBtn" class="focus:outline-none flex items-center space-x-1 hover:opacity-80 transition">
+            <div id="profileAvatar" class="w-7 h-7 rounded-full bg-white text-red-700 font-bold flex items-center justify-center text-xs border border-red-200 shadow-sm">
+              A
+            </div>
+          </button>
+          
+          <div id="profileDropdown" class="hidden absolute top-full right-0 mt-3 w-56 bg-white rounded-lg shadow-xl border border-gray-100 z-50 text-gray-800 flex flex-col overflow-hidden text-left">
+            <div class="px-4 py-3 border-b border-gray-50 bg-gray-50">
+              <div id="profileDropdownName" class="font-bold text-sm text-gray-900 truncate">Loading...</div>
+              <div id="profileDropdownEmail" class="text-[11px] text-gray-500 truncate mt-0.5"></div>
+              <div id="profileDropdownDept" class="text-[10px] text-red-600 font-semibold mt-1 inline-block bg-red-50 px-2 py-0.5 rounded-full empty:hidden"></div>
+            </div>
+            <div class="flex flex-col py-1">
+              <button onclick="openChangePasswordModal()" class="text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-red-700 transition">Change Password</button>
+            </div>
+            <div class="border-t border-gray-100">
+              <button onclick="logout()" class="w-full text-left px-4 py-2.5 text-xs font-bold text-red-700 hover:bg-red-50 transition">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Page Title -->
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-lg font-semibold text-gray-800">
+        Internship Management
+      </h1>
+      <span class="text-xs text-gray-500">
+        Placement Cell · Admin Panel
+      </span>
+    </div>
+
+    <div id="internshipSection" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left: Post Internship Form -->
+      <section class="lg:col-span-1 bg-white rounded-lg shadow-sm border border-gray-100">
+        <div class="border-b px-4 py-2.5 bg-red-50">
+          <h2 class="text-sm font-semibold text-red-800">
+            Post New Internship
+          </h2>
+          <p class="text-[11px] text-red-700">
+            Create campus-verified opportunities from company emails.
+          </p>
+        </div>
+        <form id="internshipForm" class="px-4 py-3 space-y-2.5 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Title*</label>
+            <input class="w-full border rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-red-500"
+                   name="title" required placeholder="Infosys Springboard Virtual Internship">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Company*</label>
+              <!-- For now mapping directly to company_id dropdown. Normally fetched from API -->
+              <select class="w-full border rounded px-2 py-1" name="company_id" id="adminCompanySelect" required>
+                 <option value="">Select a Company</option>
+              </select>
+              <div class="mt-1 flex items-center">
+                <input type="checkbox" id="addNewCompanyCheck" class="mr-1">
+                <label for="addNewCompanyCheck" class="text-xs text-red-600 cursor-pointer">Or add new company</label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Admin/Dept</label>
+              <input class="w-full border rounded px-2 py-1"
+                     name="admin_dept" placeholder="IT / CSE / ECE">
+            </div>
+          </div>
+
+          <div id="newCompanyFields" class="hidden bg-gray-50 border border-gray-200 rounded p-2 mb-2 space-y-2">
+            <h3 class="text-[11px] font-semibold text-gray-700">New Company Details</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="newCompName" class="border rounded px-2 py-1" placeholder="Company Name">
+              <input type="email" id="newCompEmail" class="border rounded px-2 py-1" placeholder="HR Email">
+            </div>
+            <input type="url" id="newCompWeb" class="w-full border rounded px-2 py-1" placeholder="Website URL (https://...)">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Location</label>
+              <input class="w-full border rounded px-2 py-1"
+                     name="location" placeholder="Remote / Onsite">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Mode</label>
+              <input class="w-full border rounded px-2 py-1"
+                     name="mode" placeholder="Online / Onsite / Hybrid">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Stipend</label>
+              <input class="w-full border rounded px-2 py-1"
+                     name="stipend" placeholder="₹10,000 / month">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Start Date</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="start_date">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-600 mb-1">
+              Skills / Tags
+              <span class="text-[10px] text-gray-400">(comma separated)</span>
+            </label>
+            <input class="w-full border rounded px-2 py-1"
+                   name="skill_set" placeholder="IT, Springboard, Certifications">
+          </div>
+
+          <div>
+            <label class="block text-gray-600 mb-1">Eligibility / Notes</label>
+            <textarea class="w-full border rounded px-2 py-1 h-16"
+                      name="eligibility"
+                      placeholder="Complete required Springboard courses, no backlogs, CGPA ≥ 7.0"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">End Date</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="end_date">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Deadline</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="deadline">
+            </div>
+          </div>
+
+          <button
+            class="w-full bg-red-700 hover:bg-red-800 text-white text-xs font-semibold py-1.5 rounded mt-1">
+            Save Internship
+          </button>
+        </form>
+      </section>
+
+      <!-- Right: Internship List -->
+      <section class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100">
+        <div class="border-b px-4 py-2.5 flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-semibold text-gray-800">All Active Internships</h2>
+            <p class="text-[11px] text-gray-500">
+              Campus‑verified listings visible to eligible students.
+            </p>
+          </div>
+          <div class="hidden md:flex space-x-2 text-[11px]">
+            <input id="searchBox"
+                   class="border rounded px-2 py-1 w-40"
+                   placeholder="Search by title/company">
+          </div>
+        </div>
+        <div id="internshipList" class="px-4 py-3 space-y-3 text-xs">
+          <!-- cards injected by admin.js -->
+        </div>
+      </section>
+    </div>
+
+    <!-- User Creation Section (Main Admin Only) -->
+    <section id="createUserSection" class="mt-6 bg-white rounded-lg shadow-sm border border-gray-100 hidden">
+      <div class="border-b px-4 py-2.5 bg-gray-50 flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-semibold text-gray-800">Add Department Admin / Faculty</h2>
+          <p class="text-[11px] text-gray-500">Create accounts for placement cells and staff.</p>
+        </div>
+      </div>
+      <form id="createUserForm" class="px-4 py-3 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+        <div>
+          <label class="block text-gray-600 mb-1">Name*</label>
+          <input name="name" required class="w-full border rounded px-2 py-1" placeholder="e.g. Jithin">
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-1">Email*</label>
+          <input type="email" name="email" required class="w-full border rounded px-2 py-1" placeholder="jithin@amaljyothi.ac.in">
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-1">Password*</label>
+          <input name="password" required class="w-full border rounded px-2 py-1" placeholder="Initial password" value="password123">
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-1">Role*</label>
+          <select id="createUserRoleSelect" name="role" required class="w-full border rounded px-2 py-1">
+            <option value="dept_admin">Department Admin</option>
+            <option value="faculty">Faculty</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-600 mb-1">Department*</label>
+          <input id="createUserDeptInput" name="department" required class="w-full border rounded px-2 py-1" placeholder="e.g. IT, CSE, ME">
+        </div>
+        <div class="flex items-end">
+          <button type="submit" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-1.5 rounded">Create User</button>
+        </div>
+      </form>
+      <p id="userMessage" class="px-4 pb-2 text-[11px] text-green-600 hidden"></p>
+    </section>
+
+    <!-- Manage Users Section -->
+    <section id="manageUsersSection" class="mt-6 bg-white rounded-lg shadow-sm border border-gray-100 hidden">
+      <div class="border-b px-4 py-2.5 bg-gray-50 flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-semibold text-gray-800">Manage Faculty & Admins</h2>
+          <p class="text-[11px] text-gray-500">Remove department admins or faculty members.</p>
+        </div>
+      </div>
+      <div class="px-4 py-3">
+        <table class="min-w-full text-xs text-left">
+          <thead class="bg-gray-50 text-gray-600">
+            <tr>
+              <th class="px-3 py-2">Name</th>
+              <th class="px-3 py-2">Email</th>
+              <th class="px-3 py-2">Role</th>
+              <th class="px-3 py-2">Dept</th>
+              <th class="px-3 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="manageUsersTableBody" class="divide-y divide-gray-100">
+            <!-- Data injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="applicationsSection" class="mt-6">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-base font-semibold text-gray-800">Applications</h2>
+    <div class="flex items-center space-x-3 text-xs">
+      <input id="searchAppBox" class="border rounded px-2 py-1"
+             placeholder="Search Title/Company">
+      <select id="filterStatus" class="border rounded px-2 py-1">
+        <option value="">All statuses</option>
+        <option value="Applied">Applied</option>
+        <option value="Shortlisted">Shortlisted</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Selected">Selected</option>
+      </select>
+
+      <input id="filterDept" class="border rounded px-2 py-1"
+             placeholder="Department (IT/CSE)">
+
+      <input id="filterMinCgpa" type="number" step="0.1" min="0" max="10"
+             class="border rounded px-2 py-1 w-20" placeholder="CGPA">
+
+      <input id="filterSkill" class="border rounded px-2 py-1"
+             placeholder="Skill (JS, ML…)">
+
+      <select id="sortBy" class="border rounded px-2 py-1">
+        <option value="appliedAt">Time applied</option>
+        <option value="cgpa">CGPA</option>
+        <option value="studentName">Student name</option>
+      </select>
+
+      <select id="sortOrder" class="border rounded px-2 py-1">
+        <option value="desc">Desc</option>
+        <option value="asc">Asc</option>
+      </select>
+
+      <button id="applyFiltersBtn"
+              class="bg-red-700 text-white px-3 py-1 rounded">
+        Apply filters
+      </button>
+    </div>
+  </div>
+
+  <div id="applicationsTableWrapper"
+       class="bg-white border border-gray-100 rounded-lg overflow-hidden text-xs">
+    <table class="min-w-full">
+      <thead class="bg-gray-50 text-gray-600">
+        <tr>
+          <th class="px-3 py-2 text-left">Student</th>
+          <th class="px-3 py-2 text-left">Dept / CGPA</th>
+          <th class="px-3 py-2 text-left">Internship</th>
+          <th class="px-3 py-2 text-left">Skills</th>
+          <th class="px-3 py-2 text-left">Status</th>
+          <th class="px-3 py-2 text-left">Applied at</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsTableBody" class="divide-y divide-gray-100">
+        <!-- rows injected via JS -->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+    <!-- Edit Internship Modal -->
+    <div id="editInternshipModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-5 w-full max-w-lg shadow-xl border border-gray-100 max-h-[90vh] overflow-y-auto">
+        <h2 class="text-sm font-semibold text-gray-800 mb-3 border-b pb-2">Edit Internship</h2>
+        <form id="editInternshipForm" class="space-y-2.5 text-xs">
+          <input type="hidden" name="id" id="editIntId">
+          <div>
+            <label class="block text-gray-600 mb-1">Title</label>
+            <input class="w-full border rounded px-2 py-1" name="title" id="editIntTitle" required>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Admin/Dept</label>
+              <input class="w-full border rounded px-2 py-1" name="admin_dept" id="editIntAdminDept">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Location</label>
+              <input class="w-full border rounded px-2 py-1" name="location" id="editIntLocation">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Mode</label>
+              <input class="w-full border rounded px-2 py-1" name="mode" id="editIntMode">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Stipend</label>
+              <input class="w-full border rounded px-2 py-1" name="stipend" id="editIntStipend">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Start Date</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="start_date" id="editIntStartDate">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">End Date</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="end_date" id="editIntEndDate">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Deadline</label>
+              <input type="date" class="w-full border rounded px-2 py-1" name="deadline" id="editIntDeadline">
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Skills (comma separated)</label>
+              <input class="w-full border rounded px-2 py-1" name="skill_set" id="editIntSkills">
+            </div>
+          </div>
+          <div class="flex justify-end space-x-2 mt-4 text-xs font-semibold">
+            <button type="button" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300" onclick="closeEditInternshipModal()">Cancel</button>
+            <button type="submit" class="px-3 py-1.5 bg-red-700 text-white rounded hover:bg-red-800">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-5 w-full max-w-md shadow-xl border border-gray-100 max-h-[90vh] overflow-y-auto">
+        <h2 class="text-sm font-semibold text-gray-800 mb-3 border-b pb-2">Edit User</h2>
+        <form id="editUserForm" class="space-y-3 text-xs">
+          <input type="hidden" name="id" id="editUserId">
+          <div>
+            <label class="block text-gray-600 mb-1">Name</label>
+            <input class="w-full border rounded px-2 py-1" name="name" id="editUserName" required>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Email</label>
+            <input type="email" class="w-full border rounded px-2 py-1" name="email" id="editUserEmail" required>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Password (Leave blank to keep unchanged)</label>
+            <input class="w-full border rounded px-2 py-1" name="password" id="editUserPassword">
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Department</label>
+            <input class="w-full border rounded px-2 py-1" name="department" id="editUserDept">
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Phone Number</label>
+            <input class="w-full border rounded px-2 py-1" name="phone" id="editUserPhone">
+          </div>
+          <div id="editUserDesignationContainer">
+            <label class="block text-gray-600 mb-1">Designation</label>
+            <input class="w-full border rounded px-2 py-1" name="designation" id="editUserDesignation">
+          </div>
+          <div class="flex justify-end space-x-2 mt-4 text-xs font-semibold">
+            <button type="button" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300" onclick="closeEditUserModal()">Cancel</button>
+            <button type="submit" class="px-3 py-1.5 bg-gray-800 text-white rounded hover:bg-gray-900">Save User</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="admin.js"></script>
+  <script src="changePassword.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  socket.on('new-application', app => {
+    // simple real-time behaviour:
+    // 1) reload table
+    loadApplications();
+
+    // 2) small visual notification
+    const note = document.createElement('div');
+    note.className =
+      'fixed top-4 right-4 bg-green-600 text-white text-xs px-3 py-2 rounded shadow';
+    note.textContent = `New application from ${app.studentName}`;
+    document.body.appendChild(note);
+    setTimeout(() => note.remove(), 3000);
+  });
+
+  function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login.html';
+  }
+</script>
+
+</body>
+</html>

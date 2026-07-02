@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile | Unified Internship Navigator</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+<header class="bg-red-700 text-white shadow">
+  <div class="max-w-4xl mx-auto flex items-center justify-between py-3 px-4">
+    <span class="font-semibold text-sm">Unified Internship Navigator – Student</span>
+    <span class="text-xs text-red-100 flex items-center space-x-2">
+      <span>Profile</span>
+      <button onclick="logout()"
+        class="ml-3 bg-white text-red-700 px-2 py-0.5 rounded text-[11px] hover:bg-red-50">
+        Logout
+      </button>
+    </span>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-6 text-xs">
+  <h1 class="text-lg font-semibold text-gray-800 mb-4">My Profile</h1>
+
+  <!-- Internships Section -->
+  <div class="mb-6">
+    <h2 class="text-base font-semibold text-gray-800 mb-2">My Internships</h2>
+    <div id="studentInternshipsContainer" class="bg-white border border-gray-100 rounded-lg p-4 space-y-3">
+      <div class="text-gray-500">Loading internships...</div>
+    </div>
+  </div>
+  <div id="profileMessage" class="mb-3 text-[11px] text-gray-600">
+    Enter your details once. They will be attached automatically to every application.
+  </div>
+
+  <form id="profileForm" class="bg-white border border-gray-100 rounded-lg p-4 space-y-3">
+    <!-- DOMAINS - NEW SECTION -->
+    <div>
+      <label class="block text-gray-700 mb-1">Domains *</label>
+      <select id="pfDomains" multiple class="border rounded px-2 py-1 w-full" size="4">
+        <option value="web">Web Development</option>
+        <option value="data">Data Science</option>
+        <option value="mobile">Mobile App</option>
+        <option value="ml">Machine Learning</option>
+        <option value="cloud">Cloud Computing</option>
+      </select>
+      <div class="text-[10px] text-gray-500 mt-1">Hold Ctrl/Cmd to select multiple</div>
+    </div>
+
+    <!-- SKILLS BY DOMAIN - NEW SECTION (CRITICAL) -->
+    <div id="domainSkillsContainer">
+      <label class="block text-gray-700 mb-1">Skills by Domain</label>
+      <div id="domainSkillsList"></div>
+      <button type="button" id="addDomainSkills" class="text-red-700 text-xs underline mt-1">+ Add skills for selected domains</button>
+    </div>
+
+    <!-- YOUR ORIGINAL FIELDS - UNCHANGED -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-gray-700 mb-1">Full name*</label>
+        <input id="pfName" class="border rounded px-2 py-1 w-full bg-gray-50" required readonly>
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">College email*</label>
+        <input id="pfEmail" type="email" class="border rounded px-2 py-1 w-full bg-gray-50" required readonly>
+      </div>
+    </div>
+
+    <!-- NEW ROW FOR NEW SCHEMA FIELDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div>
+        <label class="block text-gray-700 mb-1">Admission No</label>
+        <input id="pfAdmNo" class="border rounded px-2 py-1 w-full" placeholder="e.g. 2023IT001">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Department</label>
+        <input id="pfDept" class="border rounded px-2 py-1 w-full" placeholder="IT / CSE / ECE">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Branch</label>
+        <input id="pfBranch" class="border rounded px-2 py-1 w-full" placeholder="BTech / MTech">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Batch (Year)</label>
+        <input id="pfBatch" class="border rounded px-2 py-1 w-full" placeholder="e.g. 2024">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Semester</label>
+        <input id="pfSem" type="number" min="1" max="10" class="border rounded px-2 py-1 w-full" placeholder="e.g. 5">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">CGPA</label>
+        <input id="pfCgpa" type="number" step="0.01" min="0" max="10" class="border rounded px-2 py-1 w-full">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Phone Number</label>
+        <input id="pfPhn" class="border rounded px-2 py-1 w-full" placeholder="10-digit number">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">LinkedIn URL</label>
+        <input id="pfLinkedin" type="url" class="border rounded px-2 py-1 w-full" placeholder="https://linkedin.com/in/...">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-gray-700 mb-1">Projects (short summary)</label>
+      <textarea id="pfProjects" rows="3" class="border rounded px-2 py-1 w-full"
+                placeholder="Web portal for internships; ML mini project; ..."></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div>
+        <label class="block text-gray-700 mb-1">Resume URL</label>
+        <input id="pfResume" class="border rounded px-2 py-1 w-full" placeholder="Drive link / PDF URL">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">GitHub</label>
+        <input id="pfGithub" class="border rounded px-2 py-1 w-full">
+      </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Portfolio</label>
+        <input id="pfPortfolio" class="border rounded px-2 py-1 w-full">
+      </div>
+    </div>
+
+    <button type="submit" class="mt-2 bg-red-700 text-white px-4 py-1.5 rounded text-xs">
+      Save profile
+    </button>
+  </form>
+</main>
+
+<script>
+  function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login.html';
+  }
+</script>
+<script src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+2026-03-08T17:35:27.974Z ERROR in /api/profile: Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: unified_internship.studentprofiles index: studentEmail_1 dup key: { studentEmail: null }
+PAYLOAD: {"department":"IT","admission_no":"15604","branch":"","batch":"2023-2027","sem":6,"phn":"","linkedin":"","domains":["web"],"domainSkills":{"web":["React"]},"projects":[],"resume_url":"","githubUrl":"","portfolioUrl":""}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome | Unified Internship Navigator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <style>
+    .fade-in {
+      animation: fadeIn 1s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans h-screen flex items-center justify-center relative overflow-hidden">
+  <img src="/college-bg.jpg" alt="Amal Jyothi College Background" class="absolute inset-0 w-full h-full object-cover">
+  <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+  
+  <div class="relative z-10 text-center px-6 max-w-3xl fade-in" style="opacity: 0;">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Unified Internship Navigator</h1>
+    <p class="text-lg md:text-xl text-gray-300 italic mb-8">"The future belongs to those who learn more skills and combine them in creative ways."</p>
+    
+    <div class="flex flex-col items-center justify-center space-y-3">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+      <p class="text-sm text-gray-400">Loading your dashboard...</p>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const role = localStorage.getItem('role');
+      if (role === 'student') {
+        window.location.href = '/student.html';
+      } else if (role === 'main_admin' || role === 'dept_admin') {
+        window.location.href = '/admin.html';
+      } else if (role === 'faculty') {
+        window.location.href = '/faculty.html';
+      } else {
+        window.location.href = '/login.html';
+      }
+    }, 2500);
+  </script>
+</body>
+</html>

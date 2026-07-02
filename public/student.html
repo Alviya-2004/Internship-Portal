@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student | Unified Internship Navigator</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+  <header class="bg-red-700 text-white shadow">
+    <div class="max-w-6xl mx-auto flex items-center justify-between py-3 px-4">
+      <span class="font-semibold text-sm">Unified Internship Navigator – Student</span>
+      <span class="text-xs text-red-100 flex items-center space-x-2">
+        <button onclick="goHome()" class="hover:underline">Home</button>
+        <span></span>
+        <!--<button onclick="goInternships()" class="hover:underline">Internships</button>-->
+        <span>|</span>
+        <button onclick="goMyApplications()" class="hover:underline">My Applications</button>
+        <span>|</span>
+        <!-- NOTIFICATIONS BELL -->
+        <div class="relative flex items-center justify-center top-0.5">
+          <button id="notificationBtn" class="focus:outline-none relative hover:text-red-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405C18.21 14.79 18 13.627 18 12V9a6 6 0 10-12 0v3c0 1.627-.21 2.79-1.595 3.595L3 17h5m5 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+            <span id="notifBadge" class="hidden absolute -top-1.5 -right-1.5 bg-yellow-400 text-red-900 border border-white text-[9px] font-bold px-1 rounded-full">0</span>
+          </button>
+          
+          <div id="notifDropdown" class="hidden absolute top-full right-0 mt-3 w-64 bg-white rounded shadow-lg border border-gray-200 z-50 text-gray-800 flex flex-col">
+            <div class="px-3 py-2 border-b border-gray-100 font-semibold text-xs text-gray-700">Notifications</div>
+            <div id="notifList" class="max-h-56 overflow-y-auto">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <span>|</span>
+
+        <!-- PROFILE DROPDOWN -->
+        <div class="relative flex items-center justify-center pl-2">
+          <button id="profileBtn" class="focus:outline-none flex items-center space-x-1 hover:opacity-80 transition">
+            <div id="profileAvatar" class="w-7 h-7 rounded-full bg-white text-red-700 font-bold flex items-center justify-center text-xs border border-red-200 shadow-sm">
+              S
+            </div>
+          </button>
+          
+          <div id="profileDropdown" class="hidden absolute top-full right-0 mt-3 w-56 bg-white rounded-lg shadow-xl border border-gray-100 z-50 text-gray-800 flex flex-col overflow-hidden">
+            <div class="px-4 py-3 border-b border-gray-50 bg-gray-50">
+              <div id="profileDropdownName" class="font-bold text-sm text-gray-900 truncate">Loading...</div>
+              <div id="profileDropdownEmail" class="text-[11px] text-gray-500 truncate mt-0.5"></div>
+              <div id="profileDropdownDept" class="text-[10px] text-red-600 font-semibold mt-1 inline-block bg-red-50 px-2 py-0.5 rounded-full empty:hidden"></div>
+            </div>
+            <div class="flex flex-col py-1">
+              <button onclick="goProfile()" class="text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-red-700 transition">My Profile</button>
+              <button onclick="openChangePasswordModal()" class="text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-red-700 transition">Change Password</button>
+            </div>
+            <div class="border-t border-gray-100">
+              <button onclick="logout()" class="w-full text-left px-4 py-2.5 text-xs font-bold text-red-700 hover:bg-red-50 transition">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <h1 class="text-lg font-semibold text-gray-800 mb-3">Available Internships</h1>
+    <div id="studentInternshipList" class="space-y-3 text-xs"></div>
+  </main>
+
+  <!-- only HTML above; JS is in a separate file -->
+  <script>
+    function goHome() {
+      window.location.href = '/student.html';
+    }
+    function goInternships() {
+      window.location.href = '/student.html'; // same page for now
+    }
+    function goMyApplications() {
+  window.location.href = '/my-applications.html';
+}
+
+    function goProfile() {
+      window.location.href = '/profile.html';
+    }
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      window.location.href = '/login.html';
+    }
+  </script>
+  <script src="student.js"></script>
+  <script src="changePassword.js"></script>
+</body>
+</html>

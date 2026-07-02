@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seed Users</title>
+</head>
+<body>
+  <button id="seedBtn">Create demo users</button>
+  <pre id="result"></pre>
+
+  <script>
+    const btn = document.getElementById('seedBtn');
+    const result = document.getElementById('result');
+
+    btn.addEventListener('click', async () => {
+      const res = await fetch('/api/seed-users', { method: 'POST' });
+      const data = await res.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

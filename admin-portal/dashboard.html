@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <h3>Admin Panel</h3>
+    <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+    <a href="#" onclick="showSection('companies')">Manage Companies</a>
+    <a href="#" onclick="showSection('internships')">Manage Internships</a>
+    <a href="#" onclick="showSection('applications')">View Applications</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="content">
+
+    <div id="dashboard" class="section">
+        <h2>Dashboard</h2>
+        <div class="cards">
+            <div class="card">Total Students: 120</div>
+            <div class="card">Internships: 25</div>
+            <div class="card">Pending Companies: 3</div>
+        </div>
+    </div>
+
+    <div id="companies" class="section hidden">
+        <h2>Manage Companies</h2>
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>ABC Tech</td>
+                <td>Pending</td>
+                <td>
+                    <button>Approve</button>
+                    <button class="danger">Reject</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="internships" class="section hidden">
+        <h2>Manage Internships</h2>
+        <button>Add Internship</button>
+        <p>(Internship list will appear here)</p>
+    </div>
+
+    <div id="applications" class="section hidden">
+        <h2>Student Applications</h2>
+        <p>(Read-only application table)</p>
+    </div>
+
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
